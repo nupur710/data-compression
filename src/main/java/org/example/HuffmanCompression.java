@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class HuffmanCompression {
@@ -12,10 +13,36 @@ public class HuffmanCompression {
         for(int i= 0; i<text.length; i++) {
             frequencies[text[i]]++;
         }
-        for(int i= 0; i<frequencies.length; i++) {
-            System.out.print(frequencies[i]);
-        }
+//        for(int i= 0; i<frequencies.length; i++) {
+//            System.out.println((char)i +":" + frequencies[i]);
+//        }
         return frequencies;
+    }
+
+    public PriorityQueue<HuffmanNode> createPriorityQueue(int[] frequencies) {
+        PriorityQueue<HuffmanNode> queue= new PriorityQueue<HuffmanNode>(1,new FrequencyComparator());
+        //add in priority queue
+        //nodes added in ascending order of freq
+        for(int i= 0; i<frequencies.length; i++) {
+            if(frequencies[i] > 0) {
+                queue.add(new HuffmanNode((char) i, frequencies[i]));
+            }
+        }
+        return queue;
+    }
+
+    public HuffmanNode createHuffmanTree(PriorityQueue<HuffmanNode> queue) {
+        HuffmanNode root= null;
+        while(queue.size() > 0) {
+            HuffmanNode node1 = queue.poll();
+            HuffmanNode node2 = queue.poll();
+            root= new HuffmanNode('-', node1.freq+node2.freq);
+            //left child freq is less than right child
+            root.leftChild= node1; root.rightChid= node2;
+            //add root back to queue only if queue > 0. Once queue size becomes 0, the compelete tree has been built
+            if(queue.size() > 0) queue.add(root);
+        }
+        return root;
     }
 
     public static void main(String[] args) {
