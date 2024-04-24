@@ -72,4 +72,34 @@ public class HuffmanTest {
         Assert.assertNull(node2.rightChild.leftChild);
         Assert.assertNull(node2.rightChild.rightChild);
     }
+
+    //testing creationnof node which will be added in priority queue
+    @Test
+    public void createHuffmanTreeTest() {
+        int[] frequencyTable= h.frequencyTable(text.toCharArray());
+        PriorityQueue<HuffmanNode> queue= h.createPriorityQueue(frequencyTable);
+        HuffmanNode node1= h.createHuffmanTree(queue);
+        Assert.assertEquals('-', node1.ch);
+        Assert.assertEquals(8, node1.freq);
+        Assert.assertEquals('a', node1.leftChild.ch);
+        Assert.assertEquals(3, node1.leftChild.freq);
+        Assert.assertNull(node1.leftChild.leftChild);
+        Assert.assertNull(node1.leftChild.rightChild);
+        Assert.assertEquals('-', node1.rightChild.ch);
+        Assert.assertEquals(5, node1.rightChild.freq);
+        Assert.assertEquals('c', node1.rightChild.leftChild.ch);
+        Assert.assertEquals(2, node1.rightChild.leftChild.freq);
+        Assert.assertNull(node1.rightChild.leftChild.leftChild);
+        Assert.assertNull(node1.rightChild.leftChild.rightChild);
+        Assert.assertEquals('-', node1.rightChild.rightChild.ch);
+        Assert.assertEquals(3, node1.rightChild.rightChild.freq);
+        Assert.assertEquals('g', node1.rightChild.rightChild.leftChild.ch);
+        Assert.assertEquals(1, node1.rightChild.rightChild.leftChild.freq);
+        Assert.assertNull(node1.rightChild.rightChild.leftChild.leftChild);
+        Assert.assertNull(node1.rightChild.rightChild.leftChild.rightChild);
+        Assert.assertEquals('b', node1.rightChild.rightChild.rightChild.ch);
+        Assert.assertEquals(2, node1.rightChild.rightChild.rightChild.freq);
+        Assert.assertNull(node1.rightChild.rightChild.rightChild.leftChild);
+        Assert.assertNull(node1.rightChild.rightChild.rightChild.rightChild);
+    }
 }
