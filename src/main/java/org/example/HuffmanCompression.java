@@ -13,9 +13,6 @@ public class HuffmanCompression {
         for(int i= 0; i<text.length; i++) {
             frequencies[text[i]]++;
         }
-//        for(int i= 0; i<frequencies.length; i++) {
-//            System.out.println((char)i +":" + frequencies[i]);
-//        }
         return frequencies;
     }
 
@@ -34,14 +31,20 @@ public class HuffmanCompression {
     public HuffmanNode createHuffmanTree(PriorityQueue<HuffmanNode> queue) {
         HuffmanNode root= null;
         while(queue.size() > 0) {
-            HuffmanNode node1 = queue.poll();
-            HuffmanNode node2 = queue.poll();
-            root= new HuffmanNode('-', node1.freq+node2.freq);
-            //left child freq is less than right child
-            root.leftChild= node1; root.rightChid= node2;
+            root= getLeastFrequencyNode(queue);
             //add root back to queue only if queue > 0. Once queue size becomes 0, the compelete tree has been built
             if(queue.size() > 0) queue.add(root);
         }
+        return root;
+    }
+
+    public HuffmanNode getLeastFrequencyNode(PriorityQueue<HuffmanNode> queue) {
+        HuffmanNode node1 = queue.poll();
+        HuffmanNode node2 = queue.poll();
+        HuffmanNode root= new HuffmanNode('-', node1.freq+node2.freq);
+        //left child freq is less than right child
+        root.leftChild= node1;
+        root.rightChild= node2;
         return root;
     }
 
