@@ -73,7 +73,7 @@ public class HuffmanTest {
         Assert.assertNull(node2.rightChild.rightChild);
     }
 
-    //testing creationnof node which will be added in priority queue
+    //testing creation of node which will be added in priority queue
     @Test
     public void createHuffmanTreeTest() {
         int[] frequencyTable= h.frequencyTable(text.toCharArray());
@@ -101,5 +101,33 @@ public class HuffmanTest {
         Assert.assertEquals(2, node1.rightChild.rightChild.rightChild.freq);
         Assert.assertNull(node1.rightChild.rightChild.rightChild.leftChild);
         Assert.assertNull(node1.rightChild.rightChild.rightChild.rightChild);
+    }
+
+    @Test
+    public void compressTest() {
+        System.out.println("Compressed string: " + h.compress(text.toCharArray()));
+    }
+
+    @Test
+    public void generateBitsTest() {
+        String[] str= new String[h.CHARACTER_LIMIT];
+        int[] frequencyTable= h.frequencyTable(text.toCharArray());
+        PriorityQueue<HuffmanNode> queue= h.createPriorityQueue(frequencyTable);
+        HuffmanNode node1= h.createHuffmanTree(queue);
+        h.generateBits(str, node1, new StringBuilder());
+        //for string "aaabbccg"
+        Assert.assertEquals("0", str[97]);
+        Assert.assertEquals("10", str[99]);
+        Assert.assertEquals("110", str[103]);
+        Assert.assertEquals("111", str[98]);
+    }
+
+    @Test
+    public void encodeTest() {
+        int[] frequencyTable= h.frequencyTable(text.toCharArray());
+        PriorityQueue<HuffmanNode> queue= h.createPriorityQueue(frequencyTable);
+        HuffmanNode node1= h.createHuffmanTree(queue);
+        String str= h.encode(text.toCharArray(), node1);
+        Assert.assertEquals("0001111111010110", str);
     }
 }
