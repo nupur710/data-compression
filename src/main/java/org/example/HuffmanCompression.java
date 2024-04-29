@@ -70,6 +70,25 @@ public class HuffmanCompression {
         return str.toString();
     }
 
+    public String decode(String text, HuffmanNode node1) {
+        int i= 0;
+        StringBuilder originalText= null;
+        HuffmanNode node2= node1;
+        while(i < text.length()) {
+            if(text.charAt(i) == '0') {
+                node2= node1.leftChild;
+            } else if (text.charAt(i) == '1') {
+                node2= node1.rightChild;
+            }
+            if(node2.ch == '-') {
+                originalText.append(node2.ch);
+                node2= node1; //reset
+            }
+            i++;
+        }
+        return originalText.toString();
+    }
+
     public void generateBits(String[] array, HuffmanNode root, StringBuilder s) {
         if(root.ch == '-') {
             s.append(0);
