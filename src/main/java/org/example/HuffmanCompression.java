@@ -8,6 +8,7 @@ public class HuffmanCompression {
     //build priority queue with least used freq characters at top
     //build huffman tree
     public static final int CHARACTER_LIMIT= 256; //allowed characters
+    public StringBuilder header= new StringBuilder();
     public static int[] frequencyTable(char[] text) {
         int[] frequencies= new int[CHARACTER_LIMIT];
         for(int i= 0; i<text.length; i++) {
@@ -17,6 +18,8 @@ public class HuffmanCompression {
     }
 
     public PriorityQueue<HuffmanNode> createPriorityQueue(int[] frequencies) {
+        header= new StringBuilder(); //reset header in case this method is called repeadtedly
+        header.append((char) 1); //SOH
         PriorityQueue<HuffmanNode> queue = new PriorityQueue<HuffmanNode>(new FrequencyComparator());
         //add in priority queue
         //nodes added in ascending order of freq
@@ -24,8 +27,10 @@ public class HuffmanCompression {
             if(frequencies[i] > 0) {
                 //whatever is added first, remains on top in priorityqueue
                 queue.add(new HuffmanNode((char) i, frequencies[i]));
+                header.append(":").append((char) i).append(frequencies[i]);
             }
         }
+        header.append((char) 2); //STX
         return queue;
     }
 
@@ -56,8 +61,17 @@ public class HuffmanCompression {
         int[] frequencies= frequencyTable(text);
         PriorityQueue<HuffmanNode> queue= createPriorityQueue(frequencies);
         HuffmanNode node1= createHuffmanTree(queue);
-        String compressedData= encode(text, node1);
+        String compressedData= header.toString() + encode(text, node1);
         return compressedData;
+    }
+
+    public char[] decompress(char[] text) {
+        if(text[0] != (char) 1) return null;
+        int[] frequencies= parseHeaderAsFreq(text);
+        PriorityQueue<HuffmanNode> queue= createPriorityQueue(frequencies);
+        HuffmanNode node1= createHuffmanTree(queue);
+        String decompresedText= decode(text, node1);
+        return decompresedText.toCharArray();
     }
 
     public String encode(char[] text, HuffmanNode node1) {
@@ -70,14 +84,42 @@ public class HuffmanCompression {
         return str.toString();
     }
 
-    public String decode(String text, HuffmanNode node1) {
+    public char[] decode(char[] encodedText) {
+        if(encodedText[0] != (char) 1) return null; //SOH
+        int[] frequencies= parseHeaderAsFreq(encodedText);
+        return null;
+    }
+
+    public int[] parseHeaderAsFreq(char[] encodedText) {
+        int[] frequencies= new int[CHARACTER_LIMIT];
+        int i= 0;
+        for(; i<encodedText.length && encodedText[i] != (char) 2; i++) {
+            header.append(encodedText[i]);
+            if(encodedText[i] == ':') {
+                i++;
+                header.append(encodedText[i]);
+                int f= 0;
+                int m= 1;
+                int j= i+1;
+                for(; j<encodedText.length && encodedText[j] != (char) 2 && encodedText[j] != ':'; j++) {
+                    f= (f * m) + (encodedText[j] - '0');
+                    if(f != 0) m= 10;
+                    header.append(encodedText[i] - '0');
+                }
+                frequencies[encodedText[i]]= f;
+                i= j-1;
+            }
+        } return frequencies;
+    }
+
+    public String decode(char[] text, HuffmanNode node1) {
         int i= 0;
         StringBuilder originalText= null;
         HuffmanNode node2= node1;
-        while(i < text.length()) {
-            if(text.charAt(i) == '0') {
+        while(i < text.length) {
+            if(text[i] == '0') {
                 node2= node1.leftChild;
-            } else if (text.charAt(i) == '1') {
+            } else if (text[i] == '1') {
                 node2= node1.rightChild;
             }
             if(node2.ch == '-') {

@@ -101,6 +101,7 @@ public class HuffmanTest {
         Assert.assertEquals(2, node1.rightChild.rightChild.rightChild.freq);
         Assert.assertNull(node1.rightChild.rightChild.rightChild.leftChild);
         Assert.assertNull(node1.rightChild.rightChild.rightChild.rightChild);
+        Assert.assertEquals("\u0001:a3:b2:c2:g1\u0002", h.header.toString());
     }
 
     @Test
@@ -129,5 +130,15 @@ public class HuffmanTest {
         HuffmanNode node1= h.createHuffmanTree(queue);
         String str= h.encode(text.toCharArray(), node1);
         Assert.assertEquals("0001111111010110", str);
+    }
+
+    @Test
+    public void parseHeaderAsFreqTest() {
+        char[] c= "\u0001:a3:b2:c2:g1\u0002".toCharArray();
+        int[] freq= h.parseHeaderAsFreq(c);
+        Assert.assertEquals(3, freq['a']);
+        Assert.assertEquals(2, freq['b']);
+        Assert.assertEquals(2, freq['c']);
+        Assert.assertEquals(1, freq['g']);
     }
 }
