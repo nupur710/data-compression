@@ -141,4 +141,15 @@ public class HuffmanTest {
         Assert.assertEquals(2, freq['c']);
         Assert.assertEquals(1, freq['g']);
     }
+
+    @Test
+    public void decodeTest() {
+        char[] c= "\u0001:a3:b2:c2:g1\u00020001111111010110".toCharArray();
+        int[] freq= h.parseHeaderAsFreq(c);
+        PriorityQueue<HuffmanNode> queue= h.createPriorityQueue(freq);
+        HuffmanNode node1= h.createHuffmanTree(queue);
+        String decodedString= h.decode(c, node1);
+        Assert.assertEquals("aaabbccg", decodedString);
+        Assert.assertNotSame("aaabbccg", decodedString);
+    }
 }
