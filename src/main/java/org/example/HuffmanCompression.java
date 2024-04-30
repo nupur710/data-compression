@@ -84,11 +84,6 @@ public class HuffmanCompression {
         return str.toString();
     }
 
-    public char[] decode(char[] encodedText) {
-        if(encodedText[0] != (char) 1) return null; //SOH
-        int[] frequencies= parseHeaderAsFreq(encodedText);
-        return null;
-    }
 
     public int[] parseHeaderAsFreq(char[] encodedText) {
         int[] frequencies= new int[CHARACTER_LIMIT];
@@ -112,19 +107,19 @@ public class HuffmanCompression {
         } return frequencies;
     }
 
-    public String decode(char[] text, HuffmanNode node1) {
-        int i= 0;
-        StringBuilder originalText= null;
-        HuffmanNode node2= node1;
-        while(i < text.length) {
-            if(text[i] == '0') {
-                node2= node1.leftChild;
+    public String  decode(char[] text, HuffmanNode node1) {
+        int i = header.length();
+        StringBuilder originalText = new StringBuilder();
+        HuffmanNode node2 = node1;
+        while (i < text.length) {
+            if (text[i] == '0') {
+                node2 = node2.leftChild;
             } else if (text[i] == '1') {
-                node2= node1.rightChild;
+                node2 = node2.rightChild;
             }
-            if(node2.ch == '-') {
+            if (node2.leftChild == null && node2.rightChild == null) {
                 originalText.append(node2.ch);
-                node2= node1; //reset
+                node2 = node1; //reset
             }
             i++;
         }
