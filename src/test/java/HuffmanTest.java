@@ -152,4 +152,11 @@ public class HuffmanTest {
         Assert.assertEquals("aaabbccg", decodedString);
         Assert.assertNotSame("aaabbccg", decodedString);
     }
+
+    @Test
+    public void decompressTest() {
+        char[] c= "\u0001:a3:b2:c2:g1\u00020001111111010110".toCharArray();
+        char[] decompressedArray= h.decompress(c);
+        Assert.assertArrayEquals("aaabbccg".toCharArray(), decompressedArray);
+    }
 }
