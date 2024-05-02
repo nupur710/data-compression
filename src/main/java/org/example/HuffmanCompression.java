@@ -7,7 +7,7 @@ public class HuffmanCompression {
     //count frequency of each character in text--> insert in frequency table
     //build priority queue with least used freq characters at top
     //build huffman tree
-    public static final int CHARACTER_LIMIT= 256; //allowed characters
+    public static final int CHARACTER_LIMIT= 65536; //allowed characters
     public StringBuilder header= new StringBuilder();
     public static int[] frequencyTable(char[] text) {
         int[] frequencies= new int[CHARACTER_LIMIT];
