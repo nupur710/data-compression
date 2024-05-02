@@ -7,7 +7,7 @@ public class Main {
         HuffmanCompression huffman= new HuffmanCompression();
         var input= new StringBuilder();
         try {
-            FileReader file = new FileReader("C:\\Users\\lenovo\\OneDrive\\Desktop\\Gutenberg.txt");
+            FileReader file = new FileReader(System.getProperty("user.dir")+"\\src\\main\\resources\\Gutenberg.txt");
             BufferedReader br = new BufferedReader(file);
             int c;
             while((c= br.read()) != -1) {
