@@ -127,15 +127,19 @@ public class HuffmanCompression {
     }
 
     public void generateBits(String[] array, HuffmanNode root, StringBuilder s) {
+        if (root == null) {
+            return;
+        }
         if(root.ch == '-') {
-            s.append(0);
+            s.append('0');
             generateBits(array, root.leftChild, s);
-            s.append(1);
+            s.deleteCharAt(s.length() - 1);
+            s.append('1');
             generateBits(array, root.rightChild, s);
+            s.deleteCharAt(s.length() - 1);
         } else {
             System.out.println(root.ch + " - " + s.toString());
-            array[root.ch]= s.toString();
-            s.deleteCharAt(s.length()-1);
+            array[root.ch] = s.toString();
         }
     }
 
