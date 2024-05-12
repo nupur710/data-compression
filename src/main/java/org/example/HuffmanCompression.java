@@ -1,8 +1,7 @@
 package org.example;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.BitSet;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
@@ -64,8 +63,11 @@ public class HuffmanCompression {
         int[] frequencies= frequencyTable(text);
         PriorityQueue<HuffmanNode> queue= createPriorityQueue(frequencies);
         HuffmanNode node1= createHuffmanTree(queue);
-        String compressedData= header.toString() + encode(text, node1);
-        return compressedData;
+        writeHeaderToFile(header.toString());
+        String compressedData= encode(text, node1);
+        String compressedDataWithHeader= header + compressedData;
+        writeEncodedTextToFile(compressedData);
+        return compressedDataWithHeader;
     }
 
     public char[] decompress(char[] text) {
@@ -81,10 +83,31 @@ public class HuffmanCompression {
         try {
             BufferedWriter writer= new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\final_1.txt"));
             writer.write(header);
-            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void writeEncodedTextToFile(String compressedData) {
+        char[] ch = compressedData.toCharArray();
+        BitSet bitSet = new BitSet(ch.length);
+        System.out.println(bitSet.length());
+        for (int i = 0; i < ch.length; i++) {
+            if (ch[i] == '1') {
+                bitSet.set(i);
+            }
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\final_1.txt", true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(bitSet);
+            oos.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException i) {
+            i.printStackTrace();
         }
     }
 
