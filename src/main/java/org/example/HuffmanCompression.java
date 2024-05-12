@@ -1,5 +1,8 @@
 package org.example;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
@@ -72,6 +75,17 @@ public class HuffmanCompression {
         HuffmanNode node1= createHuffmanTree(queue);
         String decompresedText= decode(text, node1);
         return decompresedText.toCharArray();
+    }
+
+    public void writeHeaderToFile(String header) {
+        try {
+            BufferedWriter writer= new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\final_1.txt"));
+            writer.write(header);
+            writer.newLine();
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String encode(char[] text, HuffmanNode node1) {
