@@ -14,6 +14,7 @@ public class HuffmanCompression {
     public static int[] frequencyTable(char[] text) {
         int[] frequencies= new int[CHARACTER_LIMIT];
         for(int i= 0; i<text.length; i++) {
+            System.out.println(frequencies[text[i]]);
             frequencies[text[i]]++;
         }
         return frequencies;
@@ -53,7 +54,7 @@ public class HuffmanCompression {
 //        System.out.println("extracting " + node1.ch);
         HuffmanNode node2 = queue.poll();
 //        System.out.println("extracting " + node2.ch);
-        HuffmanNode root= new HuffmanNode('-', node1.freq+node2.freq);
+        HuffmanNode root= new HuffmanNode('`', node1.freq+node2.freq);
         //left child freq is less than right child
         root.leftChild= node1;
         root.rightChild= node2;
@@ -81,7 +82,7 @@ public class HuffmanCompression {
 
     public void writeHeaderToFile(String header) {
         try {
-            BufferedWriter writer= new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\final_1.txt"));
+            BufferedWriter writer= new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\EncodedFile.txt"));
             writer.write(header);
             writer.flush();
         } catch (IOException e) {
@@ -99,7 +100,7 @@ public class HuffmanCompression {
             }
         }
         try {
-            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\final_1.txt", true);
+            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\EncodedFile.txt", true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(bitSet);
             oos.close();
@@ -167,7 +168,7 @@ public class HuffmanCompression {
         if (root == null) {
             return;
         }
-        if(root.ch == '-') {
+        if(root.ch == '`') {
             s.append('0');
             generateBits(array, root.leftChild, s);
             s.deleteCharAt(s.length() - 1);
@@ -178,15 +179,5 @@ public class HuffmanCompression {
             System.out.println(root.ch + " - " + s.toString());
             array[root.ch] = s.toString();
         }
-    }
-
-    public static void main(String[] args) {
-        Scanner sc= new Scanner(System.in);
-        String ip= sc.nextLine();
-        char[] bf= ip.toCharArray();
-       // frequencyTable(bf);
-        HuffmanCompression hf= new HuffmanCompression();
-        hf.compress(bf);
-
     }
 }

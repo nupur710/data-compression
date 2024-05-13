@@ -91,4 +91,17 @@ public class HuffmanTest1 {
           Assert.assertEquals("11101", str['r']);
           Assert.assertEquals("11111", str['s']);
        }
+
+    @Test
+    public void decompressTest() throws IOException {
+        BufferedReader br= new BufferedReader(new FileReader(System.getProperty("user.dir")+"\\src\\main\\resources\\GutenbergEncoded.txt"));
+        int c;
+        StringBuilder abc= new StringBuilder();
+        while((c= br.read()) != -1) {
+            abc.append((char) c);
+        }
+        char[] arr_ch= abc.toString().toCharArray();
+        char[] decx= huffmanCompression.decompress(arr_ch);
+        System.out.println(decx);
+    }
 }
